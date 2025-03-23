@@ -1,3 +1,8 @@
+DROP TABLE IF EXISTS orders;
+DROP TABLE IF EXISTS item;
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS category;
+
 CREATE TABLE users (
     user_id SERIAL PRIMARY KEY,
     created_at TIMESTAMP DEFAULT NOW(),
@@ -42,8 +47,10 @@ CREATE TABLE orders (
     item_quantity INT,
     order_amount DECIMAL(10, 2),
     buyer_id INT,
+    seller_id INT,
     item_id INT,
     FOREIGN KEY (buyer_id) REFERENCES users(user_id),
+    FOREIGN KEY (seller_id) REFERENCES users(user_id),
     FOREIGN KEY (item_id) REFERENCES item(item_id)
 );
 
@@ -81,6 +88,8 @@ CREATE INDEX idx_category_name ON category (category_name);
 CREATE INDEX idx_item_seller_id ON item (seller_id);
 CREATE INDEX idx_item_category_id ON item (category_id);
 CREATE INDEX idx_item_active ON item (active);
+CREATE INDEX idx_orders_created_at ON orders (created_at);
 CREATE INDEX idx_orders_buyer_id ON orders (buyer_id);
+CREATE INDEX idx_orders_seller_id ON orders (seller_id);
 CREATE INDEX idx_orders_item_id ON orders (item_id);
 CREATE INDEX idx_category_path ON category (category_path);
